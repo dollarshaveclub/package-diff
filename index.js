@@ -1,3 +1,4 @@
+#! /usr/bin/env node
 'use strict';
 const colors = require('colors/safe');
 const fs = require('fs');

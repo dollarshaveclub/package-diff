@@ -1,6 +1,6 @@
 {
   "name": "package-diff",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Diffs the packages used between two node_modules folders",
   "main": "index.js",
   "scripts": {
