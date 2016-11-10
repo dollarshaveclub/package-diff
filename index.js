@@ -4,8 +4,16 @@ const colors = require('colors/safe');
 const fs = require('fs');
 const path = require('path');
 
-const base = readModules(process.argv[2]);
-const compare = readModules(process.argv[3]);
+const basePath = process.argv[2];
+const comparePath = process.argv[3];
+
+if (!basePath || !comparePath) {
+  console.log(colors.red('A base and compare path must be provided'))
+  return process.exit(1);
+}
+
+const base = readModules(basePath);
+const compare = readModules(comparePath);
 
 Object.keys(base).forEach(baseKey => {
   if (baseKey in compare) {
