@@ -3,22 +3,19 @@ const colors = require('colors/safe');
 const fs = require('fs');
 const path = require('path');
 
-const base =  process.argv[2];
-const compare =  process.argv[3];
+const base = readModules(process.argv[2]);
+const compare = readModules(process.argv[3]);
 
-const baseModules = readModules(base);
-const compareModules = readModules(compare);
-
-Object.keys(baseModules).forEach(baseKey => {
-  if (baseKey in compareModules) {
-    if (baseModules[baseKey] == compareModules[baseKey]) {
-      console.log(`  ${baseKey}: "${baseModules[baseKey]}"`);
+Object.keys(base).forEach(baseKey => {
+  if (baseKey in compare) {
+    if (base[baseKey] == compare[baseKey]) {
+      console.log(`  "${baseKey}": "${base[baseKey]}"`);
     } else {
-      console.log(colors.red(`- ${baseKey}: "${baseModules[baseKey]}"`));
-      console.log(colors.green(`+ ${baseKey}: "${compareModules[baseKey]}"`));
+      console.log(colors.red(`- "${baseKey}": "${base[baseKey]}"`));
+      console.log(colors.green(`+ "${baseKey}": "${compare[baseKey]}"`));
     }
   } else {
-    console.log(colors.red(`- ${baseKey}: "${baseModules[baseKey]}"`));
+    console.log(colors.red(`- "${baseKey}": "${base[baseKey]}"`));
   }
 });
 

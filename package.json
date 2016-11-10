@@ -1,10 +1,13 @@
 {
   "name": "package-diff",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Diffs the packages used between two node_modules folders",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "package-diff": "./index.js"
   },
   "keywords": [
     "npm",
@@ -15,5 +18,8 @@
   "license": "MIT",
   "dependencies": {
     "colors": "^1.1.2"
+  },
+  "engines" : {
+    "node" : ">=5.11.1"
   }
 }
