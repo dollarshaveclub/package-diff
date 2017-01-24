@@ -40,8 +40,10 @@ function readModules(location) {
     try { parsed = JSON.parse(data); }
     catch(e) { parsed = false; }
     if (!parsed) { return; }
-    const depsKey = location.indexOf(':dev') !== -1 ? 'devDependencies' : ('dependencies' || 'devDependencies');
-    const deps = parsed[depsKey];
+
+    const depsKey = location.indexOf(':dev') !== -1 ? 'devDependencies' : 'dependencies';
+    const deps = parsed[depsKey] ? parsed[depsKey] : (parsed.dependencies || parsed.devDependencies);
+
     Object.keys(deps).forEach(key => {
       deps[key] = deps[key].replace(/\^|~/g, '');
     });
