@@ -30,6 +30,19 @@ Object.keys(base).forEach(baseKey => {
 
 function readModules(location) {
   const table = {};
+
+  if (location.indexOf('package.json') !== -1) {
+    const data = fs.readFileSync(location, 'utf-8');
+    let parsed;
+    try { parsed = JSON.parse(data); }
+    catch(e) { parsed = false; }
+    if (!parsed) { return; }
+    Object.keys(parsed.dependencies).forEach(key => {
+      parsed.dependencies[key] = parsed.dependencies[key].replace(/\^|~/g, '');
+    });
+    return parsed.dependencies;
+  }
+
   fs.readdirSync(location)
     .filter(name => name !== '.bin')
     .map(name => {
