@@ -15,32 +15,40 @@ if (!basePath || !comparePath) {
 const base = readModules(basePath);
 const compare = readModules(comparePath);
 
-Object.keys(base).forEach(baseKey => {
-  if (baseKey in compare) {
-    if (base[baseKey] == compare[baseKey]) {
-      console.log(`  "${baseKey}": "${base[baseKey]}"`);
+console.log("\n" + colors.bold(`Diffing ${base.name} against ${compare.name}`) + "\n");
+
+Object.keys(base.deps).forEach(baseKey => {
+  if (baseKey in compare.deps) {
+    if (base.deps[baseKey] == compare.deps[baseKey]) {
+      console.log(`  "${baseKey}": "${base.deps[baseKey]}"`);
     } else {
-      console.log(colors.red(`- "${baseKey}": "${base[baseKey]}"`));
-      console.log(colors.green(`+ "${baseKey}": "${compare[baseKey]}"`));
+      console.log(colors.red(`- "${baseKey}": "${base.deps[baseKey]}"`));
+      console.log(colors.green(`+ "${baseKey}": "${compare.deps[baseKey]}"`));
     }
   } else {
-    console.log(colors.red(`- "${baseKey}": "${base[baseKey]}"`));
+    console.log(colors.red(`- "${baseKey}": "${base.deps[baseKey]}"`));
   }
 });
 
 function readModules(location) {
   const table = {};
 
+  // Resolve package dependencies
   if (location.indexOf('package.json') !== -1) {
-    const data = fs.readFileSync(location, 'utf-8');
+    const data = fs.readFileSync(location.replace(':dev', ''), 'utf-8');
     let parsed;
     try { parsed = JSON.parse(data); }
     catch(e) { parsed = false; }
     if (!parsed) { return; }
-    Object.keys(parsed.dependencies).forEach(key => {
-      parsed.dependencies[key] = parsed.dependencies[key].replace(/\^|~/g, '');
+    const depsKey = location.indexOf(':dev') !== -1 ? 'devDependencies' : ('dependencies' || 'devDependencies');
+    const deps = parsed[depsKey];
+    Object.keys(deps).forEach(key => {
+      deps[key] = deps[key].replace(/\^|~/g, '');
     });
-    return parsed.dependencies;
+    return {
+      name: `${location} {${depsKey}}`,
+      deps,
+    };
   }
 
   fs.readdirSync(location)
@@ -59,5 +67,8 @@ function readModules(location) {
 
       table[name] = parsed.version;
     });
-  return table;
+  return {
+    name: location,
+    deps: table
+  }
 }
