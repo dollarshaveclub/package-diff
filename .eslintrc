@@ -1,0 +1,18 @@
+{
+  "extends": [
+    "dollarshaveclub"
+  ],
+  "rules": {
+    "indent": 2,
+    "semi": [
+      2,
+      "never"
+    ],
+    "no-continue": 0,
+    "no-console": 1
+  },
+  "globals": {
+    "document": true,
+    "window": true
+  }
+}
