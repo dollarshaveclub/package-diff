@@ -4,7 +4,10 @@
   "description": "Diffs the packages used between two node_modules folders",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "eslint": "eslint . --fix",
+    "eslint:ci": "eslint .",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "update": "npx ncu"
   },
   "bin": {
     "package-diff": "./index.js"
@@ -19,7 +22,9 @@
   "dependencies": {
     "colors": "^1.1.2"
   },
-  "engines" : {
-    "node" : ">=5.11.1"
+  "devDependencies": {
+    "eslint": "^5.6.0",
+    "eslint-config-dollarshaveclub": "^3.1.0",
+    "npm-check-updates": "^2.14.2"
   }
 }
